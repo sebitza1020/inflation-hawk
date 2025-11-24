@@ -1,0 +1,20 @@
+<div style="padding: 20px; text-align: center;">
+  <h1>Inflation Hawk 🦅</h1>
+
+  <div *ngIf="!(authService.user$ | async)">
+    <button mat-raised-button color="primary" (click)="login()">
+      Login cu Google
+    </button>
+  </div>
+
+  <div *ngIf="authService.user$ | async as user">
+    <h3>Salut, {{ user.displayName }}!</h3>
+    <p>Email: {{ user.email }}</p>
+    <button mat-raised-button color="accent" (click)="testAddPrice()">
+      Trimite Preț Test
+    </button>
+    <button mat-stroked-button color="warn" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</div>
