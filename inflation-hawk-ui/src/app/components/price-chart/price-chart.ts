@@ -37,6 +37,7 @@ export class PriceChart implements OnChanges {
 
     const filtered = this.allPrices
       .filter(p => p.productName === this.selectedProduct)
+      .filter(p => p.createdAt)
       .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
 
     const seriesData = filtered.map(p => {

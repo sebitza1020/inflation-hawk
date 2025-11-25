@@ -2,6 +2,7 @@ package com.inflationhawk;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -12,10 +13,10 @@ public class PriceEntry extends PanacheEntity {
     public Double price;
     public String storeName;
     public String city;
-
-    public Instant createdAt;
-
     public String reportedBy;
+
+    @CreationTimestamp
+    public Instant createdAt;
 
     // Empty constructor necessary for JPA
     public PriceEntry() {}
