@@ -8,5 +8,5 @@ export const environment = {
     messagingSenderId: "422529876814",
     appId: "1:422529876814:web:1468348ec3490eb924541f"
   },
-  apiUrl: 'https://inflation-hawk-api.onrender.com/'
+  apiUrl: 'https://inflation-hawk-api.onrender.com'
 };

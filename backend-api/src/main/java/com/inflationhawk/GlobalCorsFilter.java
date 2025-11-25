@@ -9,7 +9,7 @@ public class GlobalCorsFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         responseContext.getHeaders().remove("Access-Control-Allow-Origin");
 
-        responseContext.getHeaders().putSingle("Access-Control-Allow-Origin", "http://localhost:4200");
+        responseContext.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
         responseContext.getHeaders().putSingle("Access-Control-Allow-Credentials", "true");
         responseContext.getHeaders().putSingle("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         responseContext.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With, Origin");
