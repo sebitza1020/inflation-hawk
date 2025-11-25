@@ -1,0 +1,22 @@
+<div class="chart-container" *ngIf="chartData.length > 0; else noData">
+  <h3>Evolutia pretului pentru: {{ productName }}</h3>
+
+  <ngx-charts-line-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="chartData"
+    [gradient]="true"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="false"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    xAxisLabel="Data"
+    yAxisLabel="Pret (RON)"
+    [autoScale]="true">
+  </ngx-charts-line-chart>
+</div>
+
+<ng-template #noData>
+  <p class="placeholder">Selecteaza un produs din lista pentru a vedea graficul.</p>
+</ng-template>

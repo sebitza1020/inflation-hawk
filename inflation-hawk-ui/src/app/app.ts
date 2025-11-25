@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { PriceService } from './services/price.service';
 import { PriceEntry } from './models/price.model';
 import { AddPriceDialog } from './components/add-price-dialog/add-price-dialog';
+import { PriceChart } from './components/price-chart/price-chart';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ import { AddPriceDialog } from './components/add-price-dialog/add-price-dialog';
     MatIconModule, 
     DatePipe,
     MatDialogModule,
-    AddPriceDialog
+    AddPriceDialog,
+    PriceChart
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -31,6 +33,8 @@ export class App implements OnInit {
   dialog = inject(MatDialog);
 
   prices: PriceEntry[] = [];
+
+  selectedProductForChart: string | null = null;
 
   ngOnInit(): void {
     this.loadPrices();
@@ -77,5 +81,10 @@ export class App implements OnInit {
       },
       error: (err) => alert("Eroare la salvare: " + err.message)
     });
+  }
+
+  selectProduct(productName: string) {
+    this.selectedProductForChart = productName;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

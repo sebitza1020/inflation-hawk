@@ -35,3 +35,13 @@ header {
   font-size: 0.8em;
   color: #666;
 }}
+
+.cursor-pointer {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.cursor-pointer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}

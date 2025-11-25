@@ -19,10 +19,15 @@
     </button>
   </div>
 
-  <h2>📊 Piata in timp real</h2>
+  <app-price-chart
+    [allPrices]="prices"
+    [selectedProduct]="selectedProductForChart">
+  </app-price-chart>
+
+  <h2>📊 Piata in timp real (Click pe card pentru istoric)</h2>
 
   <div class="price-grid">
-    <mat-card *ngFor="let entry of prices" class="price-card">
+    <mat-card *ngFor="let entry of prices" class="price-card cursor-pointer" (click)="selectProduct(entry.productName)">
       <mat-card-header>
         <mat-card-title>{{ entry.productName }}</mat-card-title>
         <mat-card-subtitle>{{ entry.storeName }} - {{ entry.city }}</mat-card-subtitle>
