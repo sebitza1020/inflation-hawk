@@ -1,0 +1,37 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Roboto, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  margin: 20px 0;
+}
+
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.price-card {
+  background: #f5f5f5;
+}
+
+.price-tag {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #2e7d32;
+  margin-top: 10px;
+
+
+.date {
+  font-size: 0.8em;
+  color: #666;
+}}

@@ -1,20 +1,38 @@
-<div style="padding: 20px; text-align: center;">
-  <h1>Inflation Hawk 🦅</h1>
+<div class="container">
+  <header>
+    <h1>Inflation Hawk 🦅</h1>
 
-  <div *ngIf="!(authService.user$ | async)">
-    <button mat-raised-button color="primary" (click)="login()">
-      Login cu Google
+    <div *ngIf="authService.user$ | async as user; else loginBtn">
+      <span>Salut, {{ user.email }}! </span>
+      <button mat-stroked-button color="warn" (click)="logout()">Logout</button>
+    </div>
+    <ng-template #loginBtn>
+      <button mat-raised-button color="primary" (click)="login()">Login cu Google</button>
+    </ng-template>
+  </header>
+
+  <hr>
+
+  <div *ngIf="authService.user$ | async" class="actions">
+    <button mat-raised-button color="accent" (click)="addTestPrice()">
+      <mat-icon>add</mat-icon> Adauga Pret Test
     </button>
   </div>
 
-  <div *ngIf="authService.user$ | async as user">
-    <h3>Salut, {{ user.displayName }}!</h3>
-    <p>Email: {{ user.email }}</p>
-    <button mat-raised-button color="accent" (click)="testAddPrice()">
-      Trimite Preț Test
-    </button>
-    <button mat-stroked-button color="warn" (click)="logout()">
-      Logout
-    </button>
+  <h2>📊 Piata in timp real</h2>
+
+  <div class="price-grid">
+    <mat-card *ngFor="let entry of prices" class="price-card">
+      <mat-card-header>
+        <mat-card-title>{{ entry.productName }}</mat-card-title>
+        <mat-card-subtitle>{{ entry.storeName }} - {{ entry.city }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="price-tag">{{ entry.price }} RON</p>
+        <p class="date">Adaugat: {{ entry.createdAt | date:'short' }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
+
+  <p *ngIf="prices.length === 0">Nu exista date. Fii primul care adauga!</p>
 </div>
