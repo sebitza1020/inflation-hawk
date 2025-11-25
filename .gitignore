@@ -1,0 +1,14 @@
+# Java
+backend-api/target/
+backend-api/.mvn/wrapper/maven-wrapper.jar
+**/*.class
+
+# Angular
+inflation-hawk-ui/node_modules/
+inflation-hawk-ui/dist/
+inflation-hawk-ui/.angular/
+
+# IDE & OS
+.vscode/
+.idea
+.DS_Store
