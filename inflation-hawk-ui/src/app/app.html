@@ -14,8 +14,8 @@
   <hr>
 
   <div *ngIf="authService.user$ | async" class="actions">
-    <button mat-raised-button color="accent" (click)="addTestPrice()">
-      <mat-icon>add</mat-icon> Adauga Pret Test
+    <button mat-raised-button color="accent" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon> Adauga Pret
     </button>
   </div>
 

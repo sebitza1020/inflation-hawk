@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Adauga Pret Nou 🏷️</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="priceForm" class="price-form">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nume Produs</mat-label>
+      <input matInput formControlName="productName" placeholder="Ex: Lapte, Oua...">
+      <mat-error *ngIf="priceForm.get('productName')?.hasError('required')">
+        Numele este obligatoriu
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pret (RON)</mat-label>
+      <input matInput formControlName="price" placeholder="0.00">
+      <mat-error *ngIf="priceForm.get('price')?.hasError('min')">
+        Pretul trebuie sa fie pozitiv
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Magazin</mat-label>
+      <input matInput formControlName="storeName" placeholder="Ex: Lidl, Mega Image">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Oras</mat-label>
+      <input matInput formControlName="city" placeholder="Ex: Bucuresti">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Anuleaza</button>
+  <button mat-raised-button color="primary" [disabled]="priceForm.invalid" (click)="save()">
+    Salveaza
+  </button>
+</mat-dialog-actions>
