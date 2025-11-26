@@ -1,43 +1,26 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
-# Compiled output
+# --- Angular & Node ---
+/node_modules
 /dist
-/tmp
 /out-tsc
 /bazel-out
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# --- Angular Cache (Important pt Angular 17+) ---
+/.angular/
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# --- Firebase ---
+.firebase/
+firebase-debug.log
+.firebaserc
 
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
-
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
+# --- Testing & Misc ---
 /coverage
-/libpeerconnection.log
-testem.log
-/typings
-__screenshots__/
+.sass-cache/
+connect.lock
+*.js.map
+*.ts.map
 
-# System files
-.DS_Store
-Thumbs.db
+# --- Environment Files (Securitate) ---
+.env
+src/environments/environment.development.ts
+# Nota: environment.ts si environment.prod.ts le pastram de obicei, 
+# dar daca ai chei secrete reale, ar trebui ignorate si ele.
