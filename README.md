@@ -13,6 +13,7 @@
 
 * **📊 Monitorizare în Timp Real:** Grafice interactive care arată istoricul prețurilor pentru produse specifice.
 * **📸 AI Receipt Scanning:** Integrare cu **Tesseract.js** pentru extragerea automată a prețurilor și numelor de produse din fotografiile bonurilor fiscale (OCR în browser).
+* **📷 Barcode Scanner:** Identificare instantanee a produselor folosind camera telefonului și API-ul **OpenFoodFacts**. Completează automat numele produsului în formular.
 * **📱 PWA (Installable):** Aplicația poate fi instalată pe telefon (iOS/Android), funcționează Full Screen și offline-first.
 * **🔐 Securitate:** Autentificare OAuth2 prin Google (Firebase Auth) și validare JWT pe backend.
 * **☁️ Cloud Native:** Arhitectură complet distribuită (Frontend pe CDN, Backend în Container, Bază de date Serverless).
@@ -27,6 +28,8 @@
 * **Charts:** ngx-charts
 * **OCR:** Tesseract.js
 * **Hosting:** Firebase Hosting
+* **Barcode:** @zxing/ngx-scanner
+* **Data Source:** OpenFoodFacts API
 
 ### Backend
 * **Framework:** Quarkus (Java 21)
