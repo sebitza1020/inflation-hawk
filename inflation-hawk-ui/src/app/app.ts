@@ -22,7 +22,6 @@ import { PriceMap } from "./components/price-map/price-map";
     MatIconModule,
     DatePipe,
     MatDialogModule,
-    AddPriceDialog,
     PriceChart,
     PriceMap
 ],
@@ -74,7 +73,9 @@ export class App implements OnInit {
       productName: data.productName,
       price: data.price,
       storeName: data.storeName,
-      city: data.city
+      city: data.city,
+      latitude: data.latitude,
+      longitude: data.longitude
     };
 
     this.priceService.addPrice(newPrice).subscribe({

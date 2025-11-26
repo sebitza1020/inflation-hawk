@@ -39,6 +39,9 @@ export class AddPriceDialog implements OnInit {
   isScanning = false; // OCR
   isBarcodeScanning = false; // Barcode
 
+  locationStatus: string = 'Se caută locația GPS... 🛰️';
+  hasLocation: boolean = false;
+
   allowedFormats = [
     BarcodeFormat.EAN_13,
     BarcodeFormat.EAN_8,
@@ -68,11 +71,16 @@ export class AddPriceDialog implements OnInit {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           });
+          this.hasLocation = true;
+          this.locationStatus = 'Locație detectată! 📍';
         },
         (error) => {
-          console.warn("Userul a refuzat locatia sau eroare GPS", error);
+          console.warn("Eroare GPS", error);
+          this.locationStatus = 'Locația nu este disponibilă (Verifică permisiunile).';
         }
       );
+    } else {
+      this.locationStatus = 'Browserul nu suportă Geolocation.';
     }
   }
 

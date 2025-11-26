@@ -56,6 +56,13 @@
     </mat-form-field>
 
   </form>
+
+  <div style="margin-top: 10px; font-size: 0.8em; text-align: right;">
+    <span [style.color]="hasLocation ? 'green' : 'orange'">
+      {{ locationStatus }}
+    </span>
+  </div>
+
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" *ngIf="!isBarcodeScanning">
