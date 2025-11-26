@@ -1,52 +1,68 @@
 <h2 mat-dialog-title>Adauga Pret Nou 🏷️</h2>
 
 <mat-dialog-content>
-  <div style="margin-bottom: 20px; text-align: center;">
-    <button mat-stroked-button color="primary" (click)="fileInput.click()" [disabled]="isScanning">
-      <mat-icon>camera_alt</mat-icon>
-      {{ isScanning ? 'Se scaneaza...' : 'Scaneaza Bon (Beta)' }}
+
+  <div class="actions-row">
+    <button mat-stroked-button color="primary" (click)="fileInput.click()" [disabled]="isScanning || isBarcodeScanning">
+      <mat-icon>camera_alt</mat-icon> Bon
     </button>
     <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
 
-    <p *ngIf="isScanning" style="font-size: 0.8em; color: orange;">
-      <i>Se proceseaza imaginea cu AI...</i>
-    </p>
+    <button mat-stroked-button color="accent" (click)="toggleBarcodeScanner()" [disabled]="isScanning">
+      <mat-icon>qr_code_scanner</mat-icon> Barcode
+    </button>
   </div>
   
-  <form [formGroup]="priceForm" class="price-form">
+  <p *ngIf="isScanning" class="status-msg">Se procesează bonul...</p>
+
+  <div *ngIf="isBarcodeScanning" class="scanner-container">
+    <p class="status-msg">Scanează codul de bare...</p>
+
+    <zxing-scanner
+      (scanSuccess)="onCodeResult($event)"
+      (camerasFound)="onCamerasFound($event)"
+      [device]="currentDevice">
+    </zxing-scanner>
+    
+    <button mat-button color="warn" (click)="toggleBarcodeScanner()">Închide Camera</button>
+  </div>
+  
+  <form [formGroup]="priceForm" class="price-form" *ngIf="!isBarcodeScanning">
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nume Produs</mat-label>
       <input matInput formControlName="productName" placeholder="Ex: Lapte, Oua...">
-      <mat-error *ngIf="priceForm.get('productName')?.hasError('required')">
+      <!-- <mat-error *ngIf="priceForm.get('productName')?.hasError('required')">
         Numele este obligatoriu
-      </mat-error>
+      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Pret (RON)</mat-label>
-      <input matInput formControlName="price" placeholder="0.00">
-      <mat-error *ngIf="priceForm.get('price')?.hasError('min')">
+      <mat-label>Preț (RON)</mat-label>
+      <input matInput type="number" formControlName="price" placeholder="0.00">
+      <!-- <mat-error *ngIf="priceForm.get('price')?.hasError('min')">
         Pretul trebuie sa fie pozitiv
-      </mat-error>
+      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Magazin</mat-label>
-      <input matInput formControlName="storeName" placeholder="Ex: Lidl, Mega Image">
+      <input matInput formControlName="storeName" placeholder="Ex: Lidl">
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Oras</mat-label>
-      <input matInput formControlName="city" placeholder="Ex: Bucuresti">
+      <mat-label>Oraș</mat-label>
+      <input matInput formControlName="city" placeholder="Ex: București">
     </mat-form-field>
 
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Anuleaza</button>
-  <button mat-raised-button color="primary" [disabled]="priceForm.invalid" (click)="save()">
-    Salveaza
+<mat-dialog-actions align="end" *ngIf="!isBarcodeScanning">
+  <button mat-button mat-dialog-close>Anulează</button>
+  <button mat-raised-button color="primary" 
+          [disabled]="priceForm.invalid || isScanning"
+          (click)="save()">
+    Salvează
   </button>
 </mat-dialog-actions>
