@@ -18,6 +18,9 @@ public class PriceEntry extends PanacheEntity {
     @CreationTimestamp
     public Instant createdAt;
 
+    public Double latitude;
+    public Double longitude;
+
     // Empty constructor necessary for JPA
     public PriceEntry() {}
 

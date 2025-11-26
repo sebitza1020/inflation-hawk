@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +27,7 @@ import { ProductLookupService } from '../../services/product-lookup.service';
   templateUrl: './add-price-dialog.html',
   styleUrl: './add-price-dialog.scss',
 })
-export class AddPriceDialog {
+export class AddPriceDialog implements OnInit {
   currentDevice: MediaDeviceInfo | undefined;
   availableDevices: MediaDeviceInfo[] = [];
 
@@ -38,6 +38,9 @@ export class AddPriceDialog {
 
   isScanning = false; // OCR
   isBarcodeScanning = false; // Barcode
+
+  locationStatus: string = 'Se caută locația GPS... 🛰️';
+  hasLocation: boolean = false;
 
   allowedFormats = [
     BarcodeFormat.EAN_13,
@@ -50,8 +53,36 @@ export class AddPriceDialog {
     productName: ['', Validators.required],
     price: [null, [Validators.required, Validators.min(0.01)]],
     storeName: ['', Validators.required],
-    city: ['Bucuresti', Validators.required]
+    city: ['Bucuresti', Validators.required],
+    latitude: [null],
+    longitude: [null]
   });
+
+  ngOnInit(): void {
+    this.geoLoacation();
+  }
+
+  geoLoacation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("Locatie gasita:", position.coords);
+          this.priceForm.patchValue({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+          this.hasLocation = true;
+          this.locationStatus = 'Locație detectată! 📍';
+        },
+        (error) => {
+          console.warn("Eroare GPS", error);
+          this.locationStatus = 'Locația nu este disponibilă (Verifică permisiunile).';
+        }
+      );
+    } else {
+      this.locationStatus = 'Browserul nu suportă Geolocation.';
+    }
+  }
 
   onCamerasFound(devices: MediaDeviceInfo[]): void {
     this.availableDevices = devices;

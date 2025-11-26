@@ -10,20 +10,21 @@ import { PriceService } from './services/price.service';
 import { PriceEntry } from './models/price.model';
 import { AddPriceDialog } from './components/add-price-dialog/add-price-dialog';
 import { PriceChart } from './components/price-chart/price-chart';
+import { PriceMap } from "./components/price-map/price-map";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
-    MatCardModule, 
-    MatIconModule, 
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
     DatePipe,
     MatDialogModule,
-    AddPriceDialog,
-    PriceChart
-  ],
+    PriceChart,
+    PriceMap
+],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -72,7 +73,9 @@ export class App implements OnInit {
       productName: data.productName,
       price: data.price,
       storeName: data.storeName,
-      city: data.city
+      city: data.city,
+      latitude: data.latitude,
+      longitude: data.longitude
     };
 
     this.priceService.addPrice(newPrice).subscribe({

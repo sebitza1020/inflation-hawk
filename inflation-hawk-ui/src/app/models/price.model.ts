@@ -6,4 +6,6 @@ export interface PriceEntry {
   city: string;
   createdAt?: string;
   reportedBy?: string;
+  latitude?: number;
+  longitude?: number;
 }
