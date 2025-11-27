@@ -99,7 +99,9 @@ public class PriceResource {
     @Path("/alerts")
     @Transactional
     public Response createAlert(PriceAlert alert) {
+        System.out.println(">>> CERERE PRIMITA: Creare alerta pentru " + alert.productName);
         alert.persist();
+        System.out.println(">>> ALERTA SALVATA IN DB!");
         return Response.ok(alert).build();
     }
 
