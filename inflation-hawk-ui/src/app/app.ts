@@ -11,6 +11,7 @@ import { PriceEntry } from './models/price.model';
 import { AddPriceDialog } from './components/add-price-dialog/add-price-dialog';
 import { PriceChart } from './components/price-chart/price-chart';
 import { PriceMap } from "./components/price-map/price-map";
+import { PriceAlertDialog } from './components/price-alert-dialog/price-alert-dialog';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,8 @@ import { PriceMap } from "./components/price-map/price-map";
     DatePipe,
     MatDialogModule,
     PriceChart,
-    PriceMap
+    PriceMap,
+    PriceAlertDialog
 ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -89,5 +91,18 @@ export class App implements OnInit {
   selectProduct(productName: string) {
     this.selectedProductForChart = productName;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  openAlertDialog() {
+    const dialogRef = this.dialog.open(PriceAlertDialog, { width: '400px' });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.priceService.createAlert(result).subscribe({
+          next: () => alert('🔔 Alertă creată cu succes! Vei primi un email când prețul scade.'),
+          error: (err) => alert('Eroare la crearea alertei.')
+        });
+      }
+    });
   }
 }

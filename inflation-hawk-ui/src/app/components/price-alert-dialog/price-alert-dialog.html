@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>🔔 Creează Alertă de Preț</h2>
+
+<mat-dialog-content>
+  <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+    Vei primi un email când cineva găsește acest produs la un preț mai mic decât cel dorit.
+  </p>
+
+  <form [formGroup]="alertForm" class="alert-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Produs (ex. Lapte, Unt)</mat-label>
+      <input matInput formControlName="productName">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Preț Țintă (Sub cât vrei să fie?)</mat-label>
+      <input matInput type="number" formControlName="targetPrice" placeholder="ex: 10.00">
+      <span matSuffix>RON&nbsp;</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email-ul tău</mat-label>
+      <input matInput formControlName="userEmail">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Anulează</button>
+  <button mat-raised-button color="accent" [disabled]="alertForm.invalid" (click)="save()">Creează Alerta</button>
+</mat-dialog-actions>

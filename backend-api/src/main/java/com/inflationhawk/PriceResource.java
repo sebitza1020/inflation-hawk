@@ -1,11 +1,14 @@
 package com.inflationhawk;
 
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
@@ -18,6 +21,12 @@ public class PriceResource {
 
     @Inject
     JsonWebToken jwt;
+
+    @Inject
+    Mailer mailer;
+
+    @Inject
+    ManagedExecutor executor;
 
     @GET
     public List<PriceEntry> getAllPrices() {
@@ -38,6 +47,7 @@ public class PriceResource {
 
         entry.reportedBy = jwt.getClaim("email");
         entry.persist();
+        executor.submit(() -> checkAlerts(entry));
         return Response.status(201).entity(entry).build();
     }
 
@@ -83,5 +93,37 @@ public class PriceResource {
                         "data_points", entries.size()
                 )
         ).build();
+    }
+
+    @POST
+    @Path("/alerts")
+    @Transactional
+    public Response createAlert(PriceAlert alert) {
+        alert.persist();
+        return Response.ok(alert).build();
+    }
+
+    private void checkAlerts(PriceEntry entry) {
+        List<PriceAlert> alerts = PriceAlert.list(
+                "productName = ?1 and isActive = true and targetPrice >= ?2",
+                entry.productName, entry.price
+        );
+
+        for (PriceAlert alert : alerts) {
+            String subject = "\uD83E\uDD85 Alerta Pret: " + entry.productName;
+            String body = String.format(
+                    "Salut!\\n\\nVești bune! Produsul '%s' a fost găsit la prețul de %.2f RON " +
+                            "(Sub limita ta de %.2f RON).\\n\\nMagazin: %s\\nLocație: %s\\n\\nSpor la cumpărături!" +
+                            "\\nEchipa Inflation Hawk",
+                    entry.productName, entry.price, alert.targetPrice, entry.storeName, entry.city
+            );
+
+            mailer.send(Mail.withText(alert.userEmail, subject, body));
+            System.out.println(">>> EMAIL TRIMIS catre " + alert.userEmail);
+
+            // Optional: Deactivate alert in order to not spam every day
+            // alert.isActive = false;
+            // alert.persist();
+        }
     }
 }
