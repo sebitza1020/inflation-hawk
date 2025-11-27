@@ -120,7 +120,7 @@ public class PriceResource {
                     entry.productName, entry.price, alert.targetPrice, entry.storeName, entry.city
             );
 
-            mailer.send(Mail.withText(alert.userEmail, subject, body));
+//            mailer.send(Mail.withText(alert.userEmail, subject, body));
             System.out.println(">>> EMAIL TRIMIS catre " + alert.userEmail);
 
             // Optional: Deactivate alert in order to not spam every day
