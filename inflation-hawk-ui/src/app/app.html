@@ -15,9 +15,13 @@
 
   <div *ngIf="authService.user$ | async" class="actions">
     <button mat-raised-button color="accent" (click)="openAddDialog()">
-      <mat-icon>add</mat-icon> Adauga Pret
+      <mat-icon>add</mat-icon> Adaugă Preț
     </button>
   </div>
+
+  <button mat-raised-button color="primary" (click)="openAlertDialog()">
+    <mat-icon>notifications_active</mat-icon> Alerte
+  </button>
 
   <app-price-chart
     [allPrices]="prices"

@@ -18,4 +18,8 @@ export class PriceService {
   addPrice(entry: PriceEntry): Observable<any> {
     return this.http.post(this.apiUrl, entry);
   }
+
+  createAlert(alertData: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/prices/alerts`, alertData);
+  }
 }
