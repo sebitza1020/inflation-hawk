@@ -3,12 +3,13 @@ package com.inflationhawk;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import io.quarkus.security.Authenticated;
+import jakarta.enterprise.event.Event;
+import jakarta.enterprise.event.ObservesAsync;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class PriceResource {
     Mailer mailer;
 
     @Inject
-    ManagedExecutor executor;
+    Event<PriceEntry> priceEvent;
 
     @GET
     public List<PriceEntry> getAllPrices() {
@@ -47,7 +48,7 @@ public class PriceResource {
 
         entry.reportedBy = jwt.getClaim("email");
         entry.persist();
-        executor.submit(() -> checkAlerts(entry));
+        priceEvent.fireAsync(entry);
         return Response.status(201).entity(entry).build();
     }
 
@@ -105,7 +106,10 @@ public class PriceResource {
         return Response.ok(alert).build();
     }
 
-    private void checkAlerts(PriceEntry entry) {
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void onPriceAdded(@ObservesAsync PriceEntry entry) {
+        System.out.println(">>> [Async] Verific alerte pentru: " + entry.productName);
+
         List<PriceAlert> alerts = PriceAlert.list(
                 "productName = ?1 and isActive = true and targetPrice >= ?2",
                 entry.productName, entry.price
@@ -120,12 +124,12 @@ public class PriceResource {
                     entry.productName, entry.price, alert.targetPrice, entry.storeName, entry.city
             );
 
-//            mailer.send(Mail.withText(alert.userEmail, subject, body));
-            System.out.println(">>> EMAIL TRIMIS catre " + alert.userEmail);
-
-            // Optional: Deactivate alert in order to not spam every day
-            // alert.isActive = false;
-            // alert.persist();
+            try {
+                mailer.send(Mail.withText(alert.userEmail, subject, body));
+                System.out.println(">>> EMAIL TRIMIS catre " + alert.userEmail);
+            } catch (Exception e) {
+                System.out.println(">>> EROARE EMAIL: " + e.getMessage());
+            }
         }
     }
 }
